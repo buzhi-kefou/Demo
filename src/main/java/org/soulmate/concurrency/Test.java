@@ -1,39 +1,31 @@
 package org.soulmate.concurrency;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 
 public class Test {
     public static void main(String[] args) {
-        testCountDownLatch();
+        ArrayList<Thread> list = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            list.add(new Thread() {
+                @Override
+                public void run() {
+                    add();
+                }
+            });
+        }
+
+        for (int i = 0; i < 100; i++) {
+            list.get(i).start();
+        }
     }
 
-    public static void testCountDownLatch() {
-        final CountDownLatch downLatch = new CountDownLatch(1);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (downLatch.getCount() != 0l) {
-                    //wait
-                }
-                System.out.println("finish wait");
-            }
-        }).start();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(8000);
-                    downLatch.countDown();
-                    System.out.println("finish sleep");
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+    static int count = 0;
+    static HashSet<Integer> set = new HashSet<>();
+
+    public static void add() {
+        System.out.println("count" + count++);
+        if (!set.add(count))
+            System.out.println("exists");
     }
 }
