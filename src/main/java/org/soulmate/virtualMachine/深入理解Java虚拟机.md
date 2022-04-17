@@ -46,4 +46,18 @@
 
 ## 垃圾收集器与内存分配策略
 ### 概述
+```java
+//-Xnoclassgc -verbose:class -XX:+TraceClassLoading -XX:+TraceClassUnLoading
+/*
+ *
+ * 类的Class对象没有在任何地方被引用
+ * 类的所有实例都已经被回收
+ * 类的类加载器已经被回收
+ * 
+ * 分代收集理论
+ * 标记-清除
+ * 标记-复制
+ * 标记-整理
+ * */
 
+```
